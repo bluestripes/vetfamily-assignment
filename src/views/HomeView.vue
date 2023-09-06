@@ -20,7 +20,6 @@ onMounted(() => {
     startCanvas();
 })
 
-
 function add( event ) {
     cleanCanvas();
     const {clientX, clientY} = event
