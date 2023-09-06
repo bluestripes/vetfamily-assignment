@@ -38,7 +38,33 @@ onMounted(() => {
         }
     });
 
+    canvas.addEventListener("touchstart", (e) => {
+        const mouseX = e.clientX - canvas.getBoundingClientRect().left;
+        const mouseY = e.clientY - canvas.getBoundingClientRect().top;
+
+        // Check if the mouse is inside any of the circles
+        for (const circle of allCircles.value) {
+            if (isMouseInsideCircle(circle, mouseX, mouseY)) {
+                circle.isDragging = true;
+            }
+        }
+    });
+
     canvas.addEventListener("mousemove", (e) => {
+        const mouseX = e.clientX - canvas.getBoundingClientRect().left;
+        const mouseY = e.clientY - canvas.getBoundingClientRect().top;
+
+        // Update the position of the dragged circles
+        for (const circle of allCircles.value) {
+            if (circle.isDragging) {
+                
+                circle.x = mouseX;
+                circle.y = mouseY;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }   
+        }
+    });
+    canvas.addEventListener("touchmove", (e) => {
         const mouseX = e.clientX - canvas.getBoundingClientRect().left;
         const mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
@@ -54,6 +80,12 @@ onMounted(() => {
     });
 
     canvas.addEventListener("mouseup", () => {
+        // Reset the dragging flag for all circles
+        for (const circle of allCircles.value) {
+            circle.isDragging = false;
+        }
+    });
+    canvas.addEventListener("touchend", () => {
         // Reset the dragging flag for all circles
         for (const circle of allCircles.value) {
             circle.isDragging = false;
