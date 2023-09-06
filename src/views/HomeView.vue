@@ -123,14 +123,15 @@ function createPolygon() {
     top: calc(var(--header-height) + var(--padding));
     left: var(--padding);
     z-index: 10;
-    font-size: 0.75rem;
-    letter-spacing: .5px;
+    font-size: .8rem;
 }
 .canvas-info div {
     padding-bottom: 12px;
 }
 .canvas-info button {
     margin-top: 12px;
+    padding: 6px 18px;
+    letter-spacing: 1px;
 }
 
 .v-enter-active,
