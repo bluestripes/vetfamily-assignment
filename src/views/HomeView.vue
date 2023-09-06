@@ -1,10 +1,10 @@
 <script setup>
-import { onMounted, onUnmounted, watch, ref } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useMarkerStore } from '../stores/marker'
 import { storeToRefs } from 'pinia';
 const markerStore = useMarkerStore();
 const { polygonArea, polygonAreaDiameter,all, polygon }  = storeToRefs(markerStore)
-const { addMarker, clearMarkers, reset,  } = markerStore;
+const { addMarker, reset } = markerStore;
 
 /*canvas */
 let canvas;
@@ -67,15 +67,7 @@ function startCanvas() {
 
 function cleanCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //clearMarkers()
 }
-
-/*function clearCanvas(context, canvas) {
-    return new Promise((resolve, reject) => {
-        context.strokeRect(0, 0, canvas.width, canvas.heighteight);
-        resolve();
-    })
-}*/
 
 function createPolygon() {
     ctx.beginPath();
@@ -96,7 +88,7 @@ function createPolygon() {
 </script>
 
 <template>
-  <section>
+    <section>
         <canvas id="canvas" @click="add">Joakim Lundell</canvas>
         <div class="canvas-info">
             <div>Click on the canvas to add three points.</div> 
@@ -143,7 +135,7 @@ function createPolygon() {
 
 .v-enter-active,
 .v-leave-active {
-    transition: opacity 0.5s ease;
+    transition: opacity 1s ease;
 }
 
 .v-enter-from,
