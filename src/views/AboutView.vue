@@ -2,8 +2,9 @@
     <div class="about">
         <h1>About</h1>
         <h2>The JavaScript assignment</h2>
-        <p>This application let's you mark three points and create a parallelogram of them. 
-            It also calculates the area of the parallelogram and generates a yellow circle with tha same size. Located in the center of the parallelogram.</p>
+        <p>This application let's you mark three points and create a parallelogram from them. 
+            It also calculates the area of the parallelogram and generates a yellow circle with tha same size, 
+            located in the center of the parallelogram.</p>
         <h2>How to use</h2>
         <ol>
             <li>Got to startpage</li>

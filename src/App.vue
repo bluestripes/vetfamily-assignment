@@ -1,6 +1,6 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import Header from './components/Header.vue'
+    import { RouterLink, RouterView } from 'vue-router'
+    import Header from './components/Header.vue'
 </script>
 
 <template>
@@ -18,7 +18,6 @@ import Header from './components/Header.vue'
 </template>
 
 <style scoped>
-
 .title { 
     border-bottom: 1px solid var(--color-border);
     letter-spacing: 1px;

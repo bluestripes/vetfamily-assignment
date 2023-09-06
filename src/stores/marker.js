@@ -32,7 +32,6 @@ export const useMarkerStore = defineStore('marker',  {
         }, 
 
         addMarker( position ) {
-            
             if (this.markers.length < this.maxCount) {  
                 this.markers.push(position)
             } else {
@@ -45,23 +44,17 @@ export const useMarkerStore = defineStore('marker',  {
                 this.markers.forEach(marker => this.addPolygonMarker(marker))
                 this.addTheFourthMarker()
             }
-        
         },
 
         addPolygonMarker (position) {
-            
             this.polygonMarkers.push(position)
-        
         },
         
         resetPolygonMarker (position) {
-            
             this.polygonMarkers = []
-        
         },
 
         addTheFourthMarker() {
-            
             let x = Math.round(
                 this.polygonMarkers[0].x - Math.round(
                     this.polygonMarkers[1].x - this.polygonMarkers[2].x))
@@ -70,14 +63,11 @@ export const useMarkerStore = defineStore('marker',  {
                     this.polygonMarkers[1].y - this.polygonMarkers[0].y))
             this.addPolygonMarker({x: x, y: y})
             this.calculatePolygonArea();
-        
         },
 
         calculatePolygonArea() {
-            
             this.polygonArea = this.parallelogramArea(this.polygonMarkers)
             this.diameter = Math.round(this.diameterFromArea(this.polygonArea))
-        
         },
 
         distanceBetween(point1, point2) {
