@@ -43,7 +43,7 @@ function updateMarkerCircles() {
 
 function drawCircle( marker, color, diameter) {
     ctx.beginPath();
-    ctx.arc(marker.x, marker.y, diameter/2, 0,2*Math.PI);
+    ctx.arc(marker.x, marker.y, diameter/2, 0, 2*Math.PI);
     ctx.strokeStyle = color;
     ctx.stroke();
 }
