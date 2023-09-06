@@ -19,6 +19,10 @@ export const useMarkerStore = defineStore('marker',  {
         },
         polygonAreaDiameter (state) {
             return state.diameter
+        },
+        circleArea (state) {
+            let radius = state.diameter / 2
+            return Math.round(radius * radius * Math.PI)
         }
     },
 
@@ -67,7 +71,7 @@ export const useMarkerStore = defineStore('marker',  {
 
         calculatePolygonArea() {
             this.polygonArea = this.parallelogramArea(this.polygonMarkers)
-            this.diameter = Math.round(this.diameterFromArea(this.polygonArea))
+            this.diameter = this.diameterFromArea(this.polygonArea)
         },
 
         distanceBetween(point1, point2) {

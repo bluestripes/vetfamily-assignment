@@ -3,7 +3,7 @@ import { onMounted, watch } from 'vue';
 import { useMarkerStore } from '../stores/marker'
 import { storeToRefs } from 'pinia';
 const markerStore = useMarkerStore();
-const { polygonArea, polygonAreaDiameter,all, polygon }  = storeToRefs(markerStore)
+const { polygonArea, polygonAreaDiameter,all, polygon, circleArea }  = storeToRefs(markerStore)
 const { addMarker, reset } = markerStore;
 
 /*canvas */
@@ -101,8 +101,12 @@ function createPolygon() {
                 <div v-if="polygonArea">The area of the parallelogram is {{ polygonArea }} square units.</div>
             </Transition>
             <Transition>
-                <div v-if="polygonAreaDiameter">The diameter of the yellow circle is {{ polygonAreaDiameter }} units.</div>
+                <div v-if="polygonAreaDiameter">The diameter of the yellow circle is {{ polygonAreaDiameter.toFixed(2) }} units.</div>
             </Transition>
+            <Transition>
+                <div v-if="polygonArea">The area of the yellow circle is {{ circleArea }} square units.</div>
+            </Transition>
+            
             <Transition>
                 <button v-if="polygonAreaDiameter" @click="restart">Restart</button>
             </Transition>
