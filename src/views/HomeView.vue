@@ -100,11 +100,21 @@ function createPolygon() {
         <canvas id="canvas" @click="add">Joakim Lundell</canvas>
         <div class="canvas-info">
             <div>Click on the canvas to add three points.</div> 
-            <div v-if="all.length > 0">Your have clicked at: {{ all }}</div>
-            <div v-if="polygon.length > 0">All four points creating the parallelogram: {{ polygon }}</div>
-            <div v-if="polygonArea">The area of the parallelogram is {{ polygonArea }} square units.</div>
-            <div v-if="polygonAreaDiameter">The diameter of the yellow circle is {{ polygonAreaDiameter }} units.</div>
-            <button v-if="polygonAreaDiameter" @click="restart">Restart</button>
+            <Transition>
+                <div v-if="all.length > 0">Your have clicked at: {{ all }}</div>
+            </Transition>
+            <Transition>
+                <div v-if="polygon.length > 0">All four points creating the parallelogram: <br />{{ polygon }}</div>
+            </Transition>
+            <Transition>
+                <div v-if="polygonArea">The area of the parallelogram is {{ polygonArea }} square units.</div>
+            </Transition>
+            <Transition>
+                <div v-if="polygonAreaDiameter">The diameter of the yellow circle is {{ polygonAreaDiameter }} units.</div>
+            </Transition>
+            <Transition>
+                <button v-if="polygonAreaDiameter" @click="restart">Restart</button>
+            </Transition>
         </div>
     </section>
 </template>
@@ -121,12 +131,23 @@ function createPolygon() {
     top: calc(var(--header-height) + var(--padding));
     left: var(--padding);
     z-index: 10;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    letter-spacing: .5px;
 }
 .canvas-info div {
-    padding-bottom: 3px;
+    padding-bottom: 12px;
 }
 .canvas-info button {
-    margin-top:3px;
+    margin-top: 12px;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
 }
 </style>
