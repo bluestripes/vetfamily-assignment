@@ -1,6 +1,8 @@
 
 :root {
   --yellow: #FFC300;
+  --red: #ff0000;
+  --black: #0e1111;
   --background: #f9f9f9;
   --header-height: 80px;
   --header-background: #ffffff;
@@ -13,14 +15,10 @@
 
 :root {
   --color-background: var(--background);
-  
   --color-border: var(--border);
   --color-border-hover: var(--border-active);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
+  --color-heading: var(--black);
+  --color-text: var(--black);
 }
 
 
