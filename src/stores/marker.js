@@ -2,18 +2,20 @@ import { defineStore } from 'pinia'
 
 export const useMarkerStore = defineStore('marker',  {
     state: () => ({
-        markers: [],
+        //markers: [],
         polygonMarkers: [],
         polygonArea: null,
         diameter: null,
-        maxCount: 3
+        maxCount: 3,
+        circle: {x: 0, y: 0, radius: 0, isDragging: false},
+        circles: []
     }),
 
     getters: {
     
-        all(state) {
+        /*all(state) {
             return state.markers
-        },
+        },*/
         polygon (state) {
             return state.polygonMarkers
         },
@@ -23,31 +25,25 @@ export const useMarkerStore = defineStore('marker',  {
         circleArea (state) {
             let radius = state.diameter / 2
             return Math.round(radius * radius * Math.PI)
+        },
+        allCircles( state ) {
+            return state.circles
         }
     },
 
     actions: {
 
         reset() {
-            this.markers = []
+            this.circles = []
             this.polygonMarkers = []
             this.polygonArea = null
             this.diameter = null
-        }, 
-
-        addMarker( position ) {
-            if (this.markers.length < this.maxCount) {  
-                this.markers.push(position)
-            } else {
-                this.resetPolygonMarker()
-                this.markers.shift()
-                this.markers.push(position)
-            }
-
-            if(this.markers.length == this.maxCount) {
-                this.markers.forEach(marker => this.addPolygonMarker(marker))
-                this.addTheFourthMarker()
-            }
+        },
+        
+        addCircle(position){
+            if (this.circles.length < this.maxCount) {  
+                this.circles.push({x: position.x, y: position.y, radius: 5.5, isDragging: false})
+            } 
         },
 
         addPolygonMarker (position) {
@@ -56,6 +52,12 @@ export const useMarkerStore = defineStore('marker',  {
         
         resetPolygonMarker (position) {
             this.polygonMarkers = []
+        },
+
+        createPolygonMarkers() {
+            this.polygonMarkers = []
+            this.circles.forEach (marker => this.addPolygonMarker(marker))
+            this.addTheFourthMarker()
         },
 
         addTheFourthMarker() {
@@ -107,10 +109,6 @@ export const useMarkerStore = defineStore('marker',  {
             const radius = Math.sqrt(area / Math.PI);
             const diameter = 2 * radius;
             return diameter;
-        },
-
-        clearMarkers() {
-            this.markers = []
         }
 
     }
