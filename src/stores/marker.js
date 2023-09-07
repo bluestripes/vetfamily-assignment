@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 
 export const useMarkerStore = defineStore('marker',  {
     state: () => ({
-        //markers: [],
         polygonMarkers: [],
         polygonArea: null,
         diameter: null,
@@ -12,10 +11,9 @@ export const useMarkerStore = defineStore('marker',  {
     }),
 
     getters: {
-    
-        /*all(state) {
-            return state.markers
-        },*/
+        allCircles( state ) {
+            return state.circles
+        },
         polygon (state) {
             return state.polygonMarkers
         },
@@ -25,9 +23,6 @@ export const useMarkerStore = defineStore('marker',  {
         circleArea (state) {
             let radius = state.diameter / 2
             return Math.round(radius * radius * Math.PI)
-        },
-        allCircles( state ) {
-            return state.circles
         }
     },
 
@@ -84,7 +79,7 @@ export const useMarkerStore = defineStore('marker',  {
 
         parallelogramArea(points) {
             if (points.length !== 4) {
-              return "Invalid input. You need exactly four points.";
+                return "Invalid input. You need exactly four points.";
             }
           
             const x = [];
@@ -92,14 +87,14 @@ export const useMarkerStore = defineStore('marker',  {
           
             // Separate x and y coordinates into separate arrays
             for (let i = 0; i < 4; i++) {
-              x.push(points[i].x);
-              y.push(points[i].y);
+                x.push(points[i].x);
+                y.push(points[i].y);
             }
           
             // Calculate the area using the shoelace formula
             const area = 0.5 * Math.abs(
-              x[0] * y[1] + x[1] * y[2] + x[2] * y[3] + x[3] * y[0] -
-              y[0] * x[1] - y[1] * x[2] - y[2] * x[3] - y[3] * x[0]
+                x[0] * y[1] + x[1] * y[2] + x[2] * y[3] + x[3] * y[0] -
+                y[0] * x[1] - y[1] * x[2] - y[2] * x[3] - y[3] * x[0]
             );
           
             return area;

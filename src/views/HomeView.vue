@@ -3,12 +3,14 @@ import { onMounted, watch, ref } from 'vue';
 import { useMarkerStore } from '../stores/marker'
 import { storeToRefs } from 'pinia';
 const markerStore = useMarkerStore();
-const { polygonArea, polygonAreaDiameter, all, polygon, circleArea, allCircles }  = storeToRefs(markerStore)
-const { addMarker, reset, addCircle, createPolygonMarkers } = markerStore;
+const { polygonArea, polygonAreaDiameter, polygon, circleArea, allCircles }  = storeToRefs(markerStore)
+const { reset, addCircle, createPolygonMarkers } = markerStore;
 
 /*canvas */
-let canvas;
-let ctx;
+let canvas, ctx;
+let red = '#ff0000'
+let blue = '#0000ff'
+let yellow = '#ffc300'
 
 watch(() => allCircles.value, (before, after) => {
     cleanCanvas();
@@ -22,7 +24,7 @@ watch(() => allCircles.value, (before, after) => {
 onMounted(() => {
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
-    startCanvas();
+    initCanvas();
 
     // Event listeners for mouse events
     canvas.addEventListener("mousedown", (e) => {
@@ -94,12 +96,6 @@ onMounted(() => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         }
-
-        // Redraw all circles
-        
-        //for (const circle of circles) {
-        //    drawCircle(circle);
-        //}
     });
 
     canvas.addEventListener("touchend", () => {
@@ -126,16 +122,6 @@ function addPoint( x, y ) {
     }
 }
 
-function add( event ) {
-    if(allCircles.value.length < 3) {
-        const {clientX, clientY} = event
-        let position = {x: clientX, y: clientY}
-        addCircle(position)
-    } else {
-        createPolygonMarkers()
-    }
-}
-
 function restart() {
     reset();
     cleanCanvas();
@@ -143,15 +129,8 @@ function restart() {
 
 function drawCircles() {
     for (const circle of allCircles.value) {
-        drawRedCircle(circle)
+        drawCircle(circle, red)
     }
-}
-
-function drawRedCircle(circle) {
-    ctx.beginPath();
-    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-    ctx.strokeStyle = '#ff0000';
-    ctx.stroke();
 }
 
 function drawCircle(circle, color) {
@@ -161,17 +140,12 @@ function drawCircle(circle, color) {
     ctx.stroke();
 }
 
-function resize() {
-    content.strokeStyle = 'red';
-    content.lineWidth = '10';
-}
-
 function fitCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight; 
 }
 
-function startCanvas() {
+function initCanvas() {
     window.addEventListener('resize', fitCanvas, false);
     fitCanvas();
 }
@@ -187,7 +161,7 @@ function createPolygon() {
         ctx.lineTo( polygon.value[i].x , polygon.value[i].y )
     }
     ctx.closePath();
-    ctx.strokeStyle = "blue";
+    ctx.strokeStyle = blue;
     ctx.stroke();
 
     // Get center for yellow circle
@@ -195,7 +169,7 @@ function createPolygon() {
     let y = (polygon.value[1].y + polygon.value[3].y) /2;
     let diameter = polygonAreaDiameter.value
     let radius = diameter / 2
-    drawCircle({x: x,y: y, radius: radius}, '#FFC300') 
+    drawCircle({x: x,y: y, radius: radius}, yellow) 
     
 }
 
@@ -203,7 +177,7 @@ function createPolygon() {
 
 <template>
     <section>
-        <canvas id="canvas" @click="">Joakim Lundell</canvas>
+        <canvas id="canvas">Joakim Lundell was here</canvas>
         
         <div class="canvas-info">
             <div>Click on the canvas to add three points.</div> 
@@ -223,11 +197,13 @@ function createPolygon() {
                 <div v-if="polygonArea">The area of the yellow circle is {{ circleArea }} square units.</div>
             </Transition>       
         </div>
+
         <div class="reset-button-position">
             <Transition>
                 <button v-if="polygonAreaDiameter" @click="restart">Restart</button>
             </Transition>
         </div>
+
     </section>
 </template>
 
