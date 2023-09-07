@@ -11,6 +11,7 @@ let canvas, ctx;
 let red = '#ff0000'
 let blue = '#0000ff'
 let yellow = '#ffc300'
+const dragging = ref(false);
 
 watch(() => allCircles.value, (before, after) => {
     cleanCanvas();
@@ -46,6 +47,9 @@ onMounted(() => {
         const mouseX = e.clientX - canvas.getBoundingClientRect().left;
         const mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
+        // For visual update on dragging
+        dragging.value = true; 
+
         // Update the position of the dragged circles
         for (const circle of allCircles.value) {
             if (circle.isDragging) {
@@ -58,6 +62,10 @@ onMounted(() => {
     
     canvas.addEventListener("mouseup", () => {
         // Reset the dragging flag for all circles
+
+        // For visual update on dragging
+        dragging.value = false; 
+
         for (const circle of allCircles.value) {
             circle.isDragging = false;
         }
@@ -80,13 +88,16 @@ onMounted(() => {
                 circle.isDragging = true;
             }
         }
-    });
+    },{ passive: false });
 
     canvas.addEventListener("touchmove", (e) => {
         e.preventDefault();
         const touch = e.touches[0];
         const touchX = touch.clientX - canvas.getBoundingClientRect().left;
         const touchY = touch.clientY - canvas.getBoundingClientRect().top;
+
+        // For visual update on dragging
+        dragging.value = true; 
 
         // Update the position of the dragged circles
         for (const circle of allCircles.value) {
@@ -96,10 +107,14 @@ onMounted(() => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         }
-    });
+    },{ passive: false });
 
     canvas.addEventListener("touchend", () => {
         // Reset the dragging flag for all circles
+
+        // For visual update on dragging
+        dragging.value = false; 
+
         for (const circle of allCircles.value) {
             circle.isDragging = false;
         }
@@ -179,7 +194,7 @@ function createPolygon() {
     <section>
         <canvas id="canvas">Joakim Lundell was here</canvas>
         
-        <div class="canvas-info">
+        <div class="canvas-info" ref="info" :class="{'dragging': dragging}">
             <div>Click on the canvas to add three points.</div> 
             <Transition>
                 <div v-if="allCircles.length > 0">Your have clicked at: {{ allCircles }}</div>
@@ -223,6 +238,7 @@ function createPolygon() {
     font-size: .8rem;
     z-index: -1;
     padding-right: 200px;
+    transition: all 2s ease;
 }
 .canvas-info div {
     padding-bottom: 12px;
@@ -234,6 +250,7 @@ function createPolygon() {
     right: var(--padding);
 }
 
+/* Vue transition */
 .reset-button-position button {
     padding: 6px 18px;
     letter-spacing: 1px;
@@ -247,5 +264,11 @@ function createPolygon() {
 .v-enter-from,
 .v-leave-to {
     opacity: 0;
+}
+
+/* fade otu text on dragging */
+.dragging {
+    color: silver;
+    transition: all 0.3s ease;
 }
 </style>
