@@ -24,15 +24,17 @@ onMounted(() => {
     ctx = canvas.getContext("2d");
     startCanvas();
 
-    // Three Event listeners for mouse events
-
+    // Event listeners for mouse events
     canvas.addEventListener("mousedown", (e) => {
         const mouseX = e.clientX - canvas.getBoundingClientRect().left;
         const mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
+        // Add point to array
+        addPoint(mouseX, mouseY)
+
         // Check if the mouse is inside any of the circles
         for (const circle of allCircles.value) {
-            if (isMouseInsideCircle(circle, mouseX, mouseY)) {
+            if (isPointInsideCircle(circle, mouseX, mouseY)) {
                 circle.isDragging = true;
             }
         }
@@ -45,7 +47,6 @@ onMounted(() => {
         // Update the position of the dragged circles
         for (const circle of allCircles.value) {
             if (circle.isDragging) {
-                
                 circle.x = mouseX;
                 circle.y = mouseY;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -59,13 +60,70 @@ onMounted(() => {
             circle.isDragging = false;
         }
     });
+
+    // Event listeners for touch events
+    canvas.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+    
+        const touch = e.touches[0];
+        const touchX = touch.clientX - canvas.getBoundingClientRect().left;
+        const touchY = touch.clientY - canvas.getBoundingClientRect().top;
+
+        // Add point to array
+        addPoint(touchX, touchY)    
+
+        // Check if a touch is inside any of the circles
+        for (const circle of allCircles.value) {
+            if (isPointInsideCircle(circle, touchX, touchY)) {
+                circle.isDragging = true;
+            }
+        }
+    });
+
+    canvas.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const touchX = touch.clientX - canvas.getBoundingClientRect().left;
+        const touchY = touch.clientY - canvas.getBoundingClientRect().top;
+
+        // Update the position of the dragged circles
+        for (const circle of allCircles.value) {
+            if (circle.isDragging) {
+                circle.x = touchX;
+                circle.y = touchY;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // Redraw all circles
+        
+        //for (const circle of circles) {
+        //    drawCircle(circle);
+        //}
+    });
+
+    canvas.addEventListener("touchend", () => {
+        // Reset the dragging flag for all circles
+        for (const circle of allCircles.value) {
+            circle.isDragging = false;
+        }
+    }); 
     
 })
 
-function isMouseInsideCircle(circle, mouseX, mouseY) {
-    const dx = mouseX - circle.x;
-    const dy = mouseY - circle.y;
+function isPointInsideCircle(circle, x, y) {
+    const dx = x - circle.x;
+    const dy = y - circle.y;
     return dx * dx + dy * dy <= circle.radius * circle.radius;
+}
+
+function addPoint( x, y ) {
+    if(allCircles.value.length < 3) {
+        let position = {x: x, y: y}
+        addCircle(position)
+    } else {
+        createPolygonMarkers()
+    }
 }
 
 function add( event ) {
@@ -114,7 +172,7 @@ function fitCanvas() {
 }
 
 function startCanvas() {
-    //window.addEventListener('resize', fitCanvas, false);
+    window.addEventListener('resize', fitCanvas, false);
     fitCanvas();
 }
 
@@ -145,7 +203,7 @@ function createPolygon() {
 
 <template>
     <section>
-        <canvas id="canvas" @click="add">Joakim Lundell</canvas>
+        <canvas id="canvas" @click="">Joakim Lundell</canvas>
         
         <div class="canvas-info">
             <div>Click on the canvas to add three points.</div> 
