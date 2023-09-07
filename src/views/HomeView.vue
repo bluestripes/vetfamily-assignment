@@ -47,15 +47,16 @@ onMounted(() => {
         const mouseX = e.clientX - canvas.getBoundingClientRect().left;
         const mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
-        // For visual update on dragging
-        dragging.value = true; 
-
         // Update the position of the dragged circles
         for (const circle of allCircles.value) {
             if (circle.isDragging) {
                 circle.x = mouseX;
                 circle.y = mouseY;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // For visual update on dragging
+                dragging.value = true; 
+
             }   
         }
     });
@@ -96,8 +97,7 @@ onMounted(() => {
         const touchX = touch.clientX - canvas.getBoundingClientRect().left;
         const touchY = touch.clientY - canvas.getBoundingClientRect().top;
 
-        // For visual update on dragging
-        dragging.value = true; 
+        
 
         // Update the position of the dragged circles
         for (const circle of allCircles.value) {
@@ -105,6 +105,9 @@ onMounted(() => {
                 circle.x = touchX;
                 circle.y = touchY;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // For visual update on dragging
+                dragging.value = true;
             }
         }
     },{ passive: false });
