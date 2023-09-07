@@ -11,6 +11,8 @@ let canvas, ctx;
 let red = '#ff0000'
 let blue = '#0000ff'
 let yellow = '#ffc300'
+
+// For visual update on dragging
 const dragging = ref(false);
 
 watch(() => allCircles.value, (before, after) => {
@@ -53,8 +55,6 @@ onMounted(() => {
                 circle.x = mouseX;
                 circle.y = mouseY;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // For visual update on dragging
                 dragging.value = true; 
 
             }   
@@ -63,8 +63,6 @@ onMounted(() => {
     
     canvas.addEventListener("mouseup", () => {
         // Reset the dragging flag for all circles
-
-        // For visual update on dragging
         dragging.value = false; 
 
         for (const circle of allCircles.value) {
@@ -105,8 +103,6 @@ onMounted(() => {
                 circle.x = touchX;
                 circle.y = touchY;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // For visual update on dragging
                 dragging.value = true;
             }
         }
@@ -115,9 +111,7 @@ onMounted(() => {
     canvas.addEventListener("touchend", () => {
         // Reset the dragging flag for all circles
 
-        // For visual update on dragging
         dragging.value = false; 
-
         for (const circle of allCircles.value) {
             circle.isDragging = false;
         }
@@ -241,7 +235,7 @@ function createPolygon() {
     font-size: .8rem;
     z-index: -1;
     padding-right: 200px;
-    transition: all 2s ease;
+    transition: all 1.5s ease;
 }
 .canvas-info div {
     padding-bottom: 12px;
